@@ -32,16 +32,93 @@ type Book {
 
 type Mutation {
     createUser(
-        name: String!
-        lastName: String!
-        email: String!
-        password: String!
+        data: createUserInput
     ): User!
     updateUser(
         id: ID!
-        name: String
-        lastName: String
-        email: String
-        password: String
+        data: updateUserInput
     ) : User!
+    createAuthor(
+        data: createAuthorInput
+    ): Author!
+    updateAuthor(
+        id: ID!
+        data: updateAuthorInput
+    ): Author!
+    createBook(
+        data: createBookInput
+    ): Book!
+    updateBook(
+        id: ID!
+        data: updateBookInput
+    ): Book!
+    deleteBook(
+        id: ID!
+    ): Book!
+}
+
+input createUserInput {
+    name: String!
+    lastName: String!
+    email: String!
+    password: String!
+}
+
+input updateUserInput {
+    name: String
+    lastName: String
+    email: String
+    password: String
+}
+
+input createAuthorInput {
+    name: String!
+    country: String!
+    register_by: ID!
+}
+
+input updateAuthorInput {
+    name: String
+    country: String
+    register_by: String
+}
+
+input createBookInput {
+    title: String!
+    description: String!
+    quantity: Int!
+    price: Int!
+    writted_by: ID!
+    register_by: ID!
+}
+
+input updateBookInput {
+    title: String
+    description: String
+    quantity: Int
+    price: Int
+    writted_by: ID
+    register_by: ID
+}
+
+type Subscription {
+    count: Int!
+    author: AuthorSusbcritionPayload!
+    book(authorId: ID!): BookSusbcriptionPayload!
+}
+
+enum MutationType {
+    CREATED
+    DELETED
+    UPDATED
+}
+
+type AuthorSusbcritionPayload {
+    mutation: MutationType!
+    data: Author!
+}
+
+type BookSusbcriptionPayload {
+    mutation: MutationType!
+    data: Book!
 }
